@@ -1,3 +1,3 @@
 # SAML Provider
 
-For testing our SAML integration.
+Runs a SAML provider for testing purposes.
