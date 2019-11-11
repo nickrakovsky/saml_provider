@@ -1,0 +1,5 @@
+{
+  "name": "saml_provider",
+  "private": true,
+  "dependencies": {}
+}
