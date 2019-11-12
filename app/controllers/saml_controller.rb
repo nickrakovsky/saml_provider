@@ -25,11 +25,15 @@ class SamlController < ApplicationController
     response = OneLogin::RubySaml::Response.new(params[:SAMLResponse], settings: settings)
 
     if response.is_valid?
-      session[:nameid] = response.nameid
-      session[:attributes] = response.attributes
-      @attrs = session[:attributes]
       logger.info "Sucessfully logged"
       logger.info "NAMEID: #{response.nameid}"
+
+      # TODO: devise sign_in
+
+      # session[:nameid] = response.nameid
+      # session[:attributes] = response.attributes
+      # @attrs = session[:attributes]
+
       render action: :index
     else
       logger.info "Response Invalid. Errors: #{response.errors}"
@@ -56,6 +60,7 @@ class SamlController < ApplicationController
     elsif params[:slo]
       sp_logout_request
     else
+      # TODO: devise sign_out
       reset_session
     end
   end
@@ -67,6 +72,8 @@ class SamlController < ApplicationController
 
     if settings.idp_slo_target_url.nil?
       logger.info "SLO IdP Endpoint not found in settings, executing then a normal logout'"
+
+      # TODO: devise sign_out
       reset_session
     else
 
@@ -101,6 +108,8 @@ class SamlController < ApplicationController
     elsif logout_response.success?
       # Actually log out this session
       logger.info "Delete session for '#{session[:nameid]}'"
+
+      # TODO: devise sign_out
       reset_session
     end
   end
@@ -119,6 +128,7 @@ class SamlController < ApplicationController
     logger.info "IdP initiated Logout for #{logout_request.nameid}"
 
     # Actually log out this session
+    # TODO: devise sign_out
     reset_session
 
     logout_response = OneLogin::RubySaml::SloLogoutresponse.new.create(
