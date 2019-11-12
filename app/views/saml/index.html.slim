@@ -1,25 +1,27 @@
-- if session[:nameid].present?
+- if current_user
   p
-    | NameID: #{session[:nameid]}
-
-  - if @attrs.any?
-    p Received the following attributes in the SAML Response:
-    table
-      thead
-        th Name
-        th Values
-      tbody
-    - @attrs.each do |key, attr_value|
-      tr
-        td= key
-        td
-          - if attr_value.any?
-            ul
-              - attr_value.each do |val|
-                li= val
-
-  p= link_to "Logout", action: "logout"
-  p= link_to "Single Logout", action: "logout", slo: '1'
+    | Signed in as: #{current_user.email}
+  p
+    = link_to "Logout", action: "logout"
+    '  |
+    = link_to "Single Logout", action: "logout", slo: '1'
 
 - else
   p= link_to "Login", action: "sso"
+
+- if @attrs.any?
+  p Received the following attributes in the SAML Response:
+  table
+    thead
+      th Name
+      th Values
+    tbody
+  - @attrs.each do |key, attr_value|
+    tr
+      td= key
+      td
+        - if attr_value.any?
+          ul
+            - attr_value.each do |val|
+              li= val
+

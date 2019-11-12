@@ -25,14 +25,17 @@ class SamlController < ApplicationController
     response = OneLogin::RubySaml::Response.new(params[:SAMLResponse], settings: settings)
 
     if response.is_valid?
-      logger.info "Sucessfully logged"
-      logger.info "NAMEID: #{response.nameid}"
+      email = response.nameid
 
-      # TODO: devise sign_in
+      logger.info "Sucessfully signed in to identity provider"
+      logger.info "Email: #{email}"
 
-      # session[:nameid] = response.nameid
-      # session[:attributes] = response.attributes
-      # @attrs = session[:attributes]
+      # Find the user and sign them in using Devise
+      @user = User.find_by(email: email)
+      sign_in @user if @user
+
+      # Just so we can show what the SAML response contained.
+      @attrs = response.attributes
 
       render action: :index
     else
