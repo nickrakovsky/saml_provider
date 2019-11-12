@@ -38,6 +38,9 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 gem "slim"
 
+# Devise
+gem "devise", "~> 4.6.2"
+
 # SAML
 gem "ruby-saml", "~> 1.11.0"
 

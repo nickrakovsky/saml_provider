@@ -3,6 +3,7 @@
 class SamlController < ApplicationController
 
   skip_before_action :verify_authenticity_token, only: %i[acs logout]
+  before_action :set_company
 
   def index
     @attrs = {}
@@ -152,13 +153,9 @@ class SamlController < ApplicationController
     onelogin_app_id = "<onelogin-app-id>"
 
     # IdP section
-    # settings.idp_entity_id = "https://app.onelogin.com/saml/metadata/#{onelogin_app_id}"
-    # settings.idp_sso_target_url = "https://app.onelogin.com/trust/saml2/http-redirect/sso/#{onelogin_app_id}"
-    # settings.idp_slo_target_url = "https://app.onelogin.com/trust/saml2/http-redirect/slo/#{onelogin_app_id}"
-    # settings.idp_cert = ""
-    settings.idp_entity_id = "http://localhost:3000/provider/metadata/#{onelogin_app_id}"
-    settings.idp_sso_target_url = "https://app.onelogin.com/trust/saml2/http-redirect/sso/#{onelogin_app_id}"
-    settings.idp_slo_target_url = "https://app.onelogin.com/trust/saml2/http-redirect/slo/#{onelogin_app_id}"
+    settings.idp_entity_id = @company.saml_settings["idp_entity_id"]
+    settings.idp_sso_target_url = @company.saml_settings["idp_sso_target_url"]
+    settings.idp_slo_target_url = @company.saml_settings["idp_slo_target_url"]
     settings.idp_cert = ""
 
 
@@ -176,6 +173,11 @@ class SamlController < ApplicationController
     settings.security[:signature_method] = XMLSecurity::Document::RSA_SHA1
 
     settings
+  end
+
+  def set_company
+    # Typically this would be based on a domain or subdomain
+    @company = Company.first
   end
 
 end
