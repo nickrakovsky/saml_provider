@@ -10,6 +10,12 @@ company = Company.create(
 
 user = company.users.create(
   email: "rsanchez@samltest.id",
-  password: "password",
-  password_confirmation: "password"
+  password: "psych",
+  password_confirmation: "psych"
+)
+
+user = company.users.create(
+  email: "msmith@samltest.id",
+  password: "panic",
+  password_confirmation: "panic"
 )

@@ -32,7 +32,11 @@ class SamlController < ApplicationController
 
       # Find the user and sign them in using Devise
       @user = User.find_by(email: email)
-      sign_in @user if @user
+      if @user
+        sign_in @user
+      else
+        flash[:error] = "We couldn't find a user matching: #{email}"
+      end
 
       # Just so we can show what the SAML response contained.
       @attrs = response.attributes
@@ -63,8 +67,8 @@ class SamlController < ApplicationController
     elsif params[:slo]
       sp_logout_request
     else
-      # TODO: devise sign_out
-      reset_session
+      # Devise sign_out
+      sign_out current_user
     end
   end
 
@@ -76,8 +80,8 @@ class SamlController < ApplicationController
     if settings.idp_slo_target_url.nil?
       logger.info "SLO IdP Endpoint not found in settings, executing then a normal logout'"
 
-      # TODO: devise sign_out
-      reset_session
+      # Devise sign_out
+      sign_out current_user
     else
 
       # Since we created a new SAML request, save the transaction_id
@@ -112,8 +116,8 @@ class SamlController < ApplicationController
       # Actually log out this session
       logger.info "Delete session for '#{session[:nameid]}'"
 
-      # TODO: devise sign_out
-      reset_session
+      # Devise sign_out
+      sign_out current_user
     end
   end
 
@@ -130,9 +134,8 @@ class SamlController < ApplicationController
     end
     logger.info "IdP initiated Logout for #{logout_request.nameid}"
 
-    # Actually log out this session
-    # TODO: devise sign_out
-    reset_session
+    # Devise sign_out
+    sign_out current_user
 
     logout_response = OneLogin::RubySaml::SloLogoutresponse.new.create(
       settings, logout_request.id, nil, RelayState: params[:RelayState]
