@@ -160,13 +160,11 @@ class SamlController < ApplicationController
     settings.assertion_consumer_service_url = "#{url_base}/saml/acs"
     settings.assertion_consumer_logout_service_url = "#{url_base}/saml/logout"
 
-    onelogin_app_id = "<onelogin-app-id>"
-
     # IdP section
     settings.idp_entity_id = @company.saml_settings["idp_entity_id"]
     settings.idp_sso_target_url = @company.saml_settings["idp_sso_target_url"]
     settings.idp_slo_target_url = @company.saml_settings["idp_slo_target_url"]
-    settings.idp_cert = ""
+    settings.idp_cert = @company.saml_settings["idp_cert"]
 
 
     # or settings.idp_cert_fingerprint = ""
