@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ClientController < SamlIdp::IdpController
+class SamlController < SamlIdp::IdpController
 
   skip_before_action :verify_authenticity_token, only: %i[acs logout]
 
@@ -152,7 +152,11 @@ class ClientController < SamlIdp::IdpController
     onelogin_app_id = "<onelogin-app-id>"
 
     # IdP section
-    settings.idp_entity_id = "https://app.onelogin.com/saml/metadata/#{onelogin_app_id}"
+    # settings.idp_entity_id = "https://app.onelogin.com/saml/metadata/#{onelogin_app_id}"
+    # settings.idp_sso_target_url = "https://app.onelogin.com/trust/saml2/http-redirect/sso/#{onelogin_app_id}"
+    # settings.idp_slo_target_url = "https://app.onelogin.com/trust/saml2/http-redirect/slo/#{onelogin_app_id}"
+    # settings.idp_cert = ""
+    settings.idp_entity_id = "http://localhost:3000/provider/metadata/#{onelogin_app_id}"
     settings.idp_sso_target_url = "https://app.onelogin.com/trust/saml2/http-redirect/sso/#{onelogin_app_id}"
     settings.idp_slo_target_url = "https://app.onelogin.com/trust/saml2/http-redirect/slo/#{onelogin_app_id}"
     settings.idp_cert = ""

@@ -37,7 +37,6 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'bootsnap', '>= 1.1.0', require: false
 
 # SAML
-gem "saml_idp", "~> 0.8.0"
 gem "ruby-saml", "~> 1.11.0"
 
 group :development, :test do
