@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AuthController < SamlIdp::IdpController
+class ProviderController < SamlIdp::IdpController
 
   def idp_authenticate(email, password)
     user = User.by_email(email).first
